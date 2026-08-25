@@ -16,17 +16,27 @@ class Game:
             self.player.new(name)
             
     def run(self):
-        system("clear")
         options = ["cara", "coroa"]
-        print(f'''
-              \n\033[36m[!] Muito bem, {self.player.name}, vamos nessa!\033[0m
-              
-              \n\033[36m[!] Você tem {self.player.cash:.2f} cash para apostar.\033[0m''')
 
         while True:
+            if self.player.wallet.is_broke():
+                if input("Voce faliu! Deseja reiniciar?[s/n]") == "s":
+                    username = str(input("Digite o nome de usuario:"))
+                    self.player.new(username)
+                
+                else:
+                    exit()
+
+            system("clear")
+            print(f'''
+              \n\033[36m[!] Muito bem, {self.player.name}, vamos nessa!\033[0m
+              
+              \n\033[36m[!] Você tem {self.player.wallet.balance():.2f} cash para apostar.\033[0m'''
+              )
+
             try:
                 amount = float(input("\n[?] O quanto você quer apostar?\nplayer: "))
-                if not self.player.verify_cash(amount):
+                if not self.player.wallet.debit(amount):
                     print("[!] Você não tem dinheiro suficiente.")
                     sleep(1)
                     continue
@@ -39,14 +49,15 @@ class Game:
             if pick not in options:
                 print("[!] Insira um lado válido: cara ou coroa")
                 sleep(1)
-                continue
+                break
 
             if pick == choice(options):
                 self.player.wins += 1
-                self.player.cash += amount
+                cash = amount*2
+                self.player.wallet.credit(cash)
                 print(f"\n\033[32m[!] Você acertou! +{amount:.2f} cash\033[0m")
             else:
-                self.player.cash -= amount
+                self.player.wallet.debit(amount)
                 print(f"\n\033[31m[!] Você perdeu! -{amount:.2f} cash\033[0m")
 
             self.player.total += 1
@@ -61,4 +72,7 @@ if __name__ == "__main__":
     player = Player()
     s = Game(player)
     print(s.player.player_info())
-    s.run()
+    try:
+        s.run()
+    except KeyboardInterrupt:
+        print("Ate mais!")
