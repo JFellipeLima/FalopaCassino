@@ -1,5 +1,5 @@
-from .fileManager import Files
-from .wallet import Wallet
+from economy.fileManager import Files
+from economy.wallet import Wallet
 
 class Player:
     def __init__(self):

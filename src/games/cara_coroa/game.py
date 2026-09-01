@@ -5,11 +5,13 @@ from os import system
 from random import choice
 from time import sleep
 from random import choice
-from src.player import Player
+from players.player import Player
+from economy.wallet import Wallet
 
 class Game:
-    def __init__(self, player=None):
+    def __init__(self, player=None, wallet=None):
         self.player = player
+        self.wallet = wallet
         if not self.player:
             name = input("\n[?] Qual o seu nome?\nplayer: ")
             self.player = Player()
@@ -70,7 +72,8 @@ class Game:
 
 if __name__ == "__main__":
     player = Player()
-    s = Game(player)
+    wallet = Wallet()
+    s = Game(player, wallet)
     print(s.player.player_info())
     try:
         s.run()

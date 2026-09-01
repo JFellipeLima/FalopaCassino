@@ -3,8 +3,9 @@
 from random import choices
 from time import sleep
 
-from src.wallet import Wallet
-from src.bets import Bet
+from economy.wallet import Wallet
+from players.player import Player
+from economy.bets import Bet
 
 
 class Game:
@@ -25,9 +26,10 @@ class Game:
         "🍋": 3
     }
 
-    def __init__(self, wallet):
+    def __init__(self, wallet, player):
 
         self.bet = Bet(wallet)
+        self.player = player
 
         self.jackpot = 1000
 
@@ -220,6 +222,7 @@ class Game:
 
 if __name__ == "__main__":
     wallet = Wallet()
-    game = Game(wallet)
+    player = Player()
+    game = Game(wallet, player)
 
     game.run()

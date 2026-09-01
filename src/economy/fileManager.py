@@ -26,4 +26,3 @@ class Files:
 
         with open(self.DATA_PATH, "w", encoding="utf-8") as file:
             json.dump(user, file, indent=4)
-            
